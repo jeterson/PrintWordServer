@@ -41,6 +41,7 @@ Body Request:
 	"basePath": "C:\\temp",
 	"basePathReplaced": "replaced",
 	"keyPrefix": "&",
+	"printerName": "HP Laser Jet",
 	"replaces": [
 		{
 			"key": "nome",
