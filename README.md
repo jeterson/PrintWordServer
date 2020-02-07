@@ -20,6 +20,8 @@
  
   
 #### Imprimindo um documento
+Recurso: `http://localhost:5170/Print`
+<br />
 Crie um arquivo em `C:\temp\Teste.docx`
 <br />
 Envie uma requisição com o seguinte corpo:
@@ -31,6 +33,15 @@ Envie uma requisição com o seguinte corpo:
 }
 ```
 O documento será impresso na impressora padrão.
+<br />
+Pode também passar uma propriedade com o nome `printerName` para imprimir em uma impressora específica
+
+```
+{
+	...
+	"printerName": "nomeDaImpressora"
+}
+```
 
 # Substituindo Palavras
 Recurso: `http://localhost:5170/Print` <br/>
@@ -57,3 +68,6 @@ Body Request:
 Crie um Doc com o conteudo por exemplo: `Olá &nome` e envie uma requisição para o servidor.
 <br/>
 Será impresso `Olá Jeterson`
+
+# Retornar Arquivos word de um diretório
+Recurso: `http://localhost:5170/DocsModels?dir=C:\temp`
