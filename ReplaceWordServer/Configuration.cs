@@ -54,13 +54,27 @@ namespace ReplaceWordServer
             server.AddHttpRequestHandler(new ReplacePrinterWordHttpRequestHandler());
             server.AddHttpRequestHandler(new ListPrintersHttpRequestHandler());
             server.AddHttpRequestHandler(new TestHttpRequestHandler());
+            server.AddHttpRequestHandler(new DocsModelsHttpRequestHandler());
             server.Start();
 
         }
 
+        public bool IsRunningAdministrator()
+        {
+            return Utils.IsRunningAsAdministrator();
+        }
+
         public bool IsServerListening()
         {
+            if (server == null) {
+                return false;
+            }
             return server.IsListening();
+        }
+
+        public String GetLocalIP()
+        {
+            return Utils.GetLocalIP();
         }
 
         public void Stop()

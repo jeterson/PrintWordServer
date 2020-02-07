@@ -12,6 +12,7 @@ namespace ReplaceWordServer.Model
         public String BasePath { get; set; }
         public String BasePathReplaced { get; set; }
         public String KeyPrefix { get; set; }
+        public String PrinterName { get; set; }
         public IList<ReplaceModel> Replaces { get; set; }
 
     }

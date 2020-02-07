@@ -2,6 +2,7 @@
 using ReplaceWordServer.Parsers;
 using ReplaceWordServer.Server;
 using ReplaceWordServer.Services;
+using ReplaceWordServer.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,48 +22,64 @@ namespace ReplaceWordServer.Resource
         public void Handle(System.Net.HttpListenerContext context)
         {
             HttpListenerResponse response = context.Response;
+            HttpListenerRequest request = context.Request;
+            Utils.CorsConfig(request, response);            
             response.StatusCode = (int)HttpStatusCode.OK;
 
             System.IO.StreamReader reader = null;
             System.IO.Stream body = null;
             string message;
-            try
-            {
-                body = context.Request.InputStream;
-                System.Text.Encoding encoding = context.Request.ContentEncoding;
-                reader = new System.IO.StreamReader(body, encoding);
-
-                String json = reader.ReadToEnd();
-
-                PrintModel printModel = Serialization.DesserializeFromJson<PrintModel>(json);
-
-                String outFile = replaceService.Replace(printModel);
-                printService.PrintDoc(outFile);
-
-
-            }
-            catch (Exception e)
-            {
-                response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                message = e.Message;
-                byte[] messageBytes = Encoding.Default.GetBytes(message);
-                response.OutputStream.Write(messageBytes, 0, messageBytes.Length);
-
-            }
-            finally
+            if (request.HttpMethod == "OPTIONS")
             {
                 response.Close();
+            }
+            else
+            {
 
-                if (body != null)
+                try
                 {
-                    body.Close();
-                }
+                    body = context.Request.InputStream;
+                    System.Text.Encoding encoding = context.Request.ContentEncoding;
+                    reader = new System.IO.StreamReader(body, Encoding.UTF8);
 
-                if (reader != null)
+                    String json = reader.ReadToEnd();
+
+                    PrintModel printModel = Serialization.DesserializeFromJson<PrintModel>(json);
+                    if (printModel.Replaces == null)
+                        printModel.Replaces = new List<ReplaceModel>();
+
+                    String outFile = replaceService.Replace(printModel);
+
+                    if(!String.IsNullOrWhiteSpace(printModel.PrinterName))
+                        printService.PrintDoc(outFile, printModel.PrinterName);
+                    else
+                        printService.PrintDoc(outFile);
+
+
+                }
+                catch (Exception e)
                 {
-                    reader.Close();
-                }
+                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    message = e.Message;
+                    byte[] messageBytes = Encoding.Default.GetBytes(message);
+                    response.OutputStream.Write(messageBytes, 0, messageBytes.Length);
 
+                }
+                finally
+                {
+                    response.Close();
+
+                    if (body != null)
+                    {
+                        body.Close();
+                    }
+
+                    if (reader != null)
+                    {
+                        reader.Close();
+                    }
+
+                }
             }
         }
 

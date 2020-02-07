@@ -55,12 +55,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
+    <Compile Include="Model\DocFile.cs" />
     <Compile Include="Model\PrinterModel.cs" />
     <Compile Include="Model\PrintModel.cs" />
     <Compile Include="Model\ReplaceModel.cs" />
     <Compile Include="Parsers\Serialization.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resource\DocsModelsHttpRequestHandler.cs" />
     <Compile Include="Resource\ListPrintersHttpRequestHandler.cs" />
     <Compile Include="Resource\ReplacePrinterWordHttpRequestHandler.cs" />
     <Compile Include="Resource\TestHttpRequestHandler.cs" />

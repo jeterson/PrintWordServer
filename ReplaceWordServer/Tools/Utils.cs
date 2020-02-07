@@ -24,6 +24,17 @@ namespace ReplaceWordServer.Tools
           throw new Exception("No network adapters with an IPv4 address in the system!");
       }
 
+      public static void CorsConfig(HttpListenerRequest request, HttpListenerResponse response)
+      {
+         // if (request.HttpMethod == "OPTIONS")
+          {
+              response.AddHeader("Access-Control-Allow-Origin", "*");
+              response.AddHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+              response.AddHeader("Access-Control-Allow-Headers", "X-Requested-With, x-no-api, content-type");
+              response.AddHeader("Access-Control-Max-Age", "86400");
+          }
+      }
+
       public static bool IsRunningAsAdministrator()
       {
           var identity = WindowsIdentity.GetCurrent();

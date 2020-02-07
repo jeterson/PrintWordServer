@@ -1,4 +1,5 @@
 ﻿using ReplaceWordServer.Server;
+using ReplaceWordServer.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,11 @@ namespace ReplaceWordServer.Resource
         public const String NAME = "/";
         public void Handle(System.Net.HttpListenerContext context)
         {
+            HttpListenerRequest request = context.Request;
             HttpListenerResponse response = context.Response;
+            Utils.CorsConfig(request, response);
+
+            
             response.StatusCode = (int)HttpStatusCode.OK;
 
             const String message = "true";

@@ -1,6 +1,7 @@
 ﻿using ReplaceWordServer.Model;
 using ReplaceWordServer.Parsers;
 using ReplaceWordServer.Server;
+using ReplaceWordServer.Tools;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Printing;
@@ -18,6 +19,9 @@ namespace ReplaceWordServer.Resource
         public void Handle(System.Net.HttpListenerContext context)
         {
             HttpListenerResponse response = context.Response;
+            HttpListenerRequest request = context.Request;
+            Utils.CorsConfig(request, response);
+            
             response.StatusCode = (int) HttpStatusCode.OK;
 
             List<PrinterModel> printers = new List<PrinterModel>();
